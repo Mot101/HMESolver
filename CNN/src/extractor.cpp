@@ -40,7 +40,7 @@ vector<string> load_classes_from_file(const string& filename) {
 
 int main(int argc, char* argv[]) {
     if (argc != 2){
-        cout << "Usage: ./symbol_classifier <image_path>" << endl;
+        cout << "Usage: ./cnn_extractor <image_path>" << endl;
         return 1;
     }
     string weights_folder = "weights/";
