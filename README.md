@@ -22,7 +22,7 @@ In the preprocessing stage, each symbol image is converted to a unified format b
 
 ## 4. Expression Tree
 
-After the CNN recognizes individual symbols, the resulting equation string is passed to the expression tree module, which converts it into a canonical algebraic form. First, _addExplicitMult_ inserts explicit dot operators where multiplication is implicit (e.g., 2x → 2*x, x(y) → x*(y)). Then _buildTree_ constructs an expression tree using operator precedence and parentheses, while also handling unary minus by encoding it as a dedicated operator. Next, normalize recursively transforms the tree into a _MultiPolynomial_ representation: constants and variables become monomials, addition/subtraction merges coefficients, multiplication performs term-by-term expansion with exponent accumulation, exponentiation is supported only for non-negative integers (reading the exponentiation symbol was not implemented due to the missing character set as datasets), and division is allowed only by a monomial (otherwise an empty polynomial is returned to signal an unsupported case). If an equality sign is present, the left and right sides are normalized and moved to one side (pL - pR = 0): if there are no variables, the code evaluates both sides and checks whether the equality holds; if there is exactly one variable, the solver searches for real roots on [-1000, 1000] using Newton’s method; and if there are multiple variables, it returns the simplified polynomial equation set to zero. (see [CNN/src/expression_tree.cpp](./CNN/src/expression_tree.cpp)
+After the CNN recognizes individual symbols, the resulting equation string is passed to the expression tree module, which converts it into a canonical algebraic form. First, _addExplicitMult_ inserts explicit dot operators where multiplication is implicit (e.g., 2x → 2*x, x(y) → x*(y)). Then _buildTree_ constructs an expression tree using operator precedence and parentheses, while also handling unary minus by encoding it as a dedicated operator. Next, normalize recursively transforms the tree into a _MultiPolynomial_ representation: constants and variables become monomials, addition/subtraction merges coefficients, multiplication performs term-by-term expansion with exponent accumulation, exponentiation is supported only for non-negative integers (reading the exponentiation symbol was not implemented due to the missing character set as datasets), and division is allowed only by a monomial (otherwise an empty polynomial is returned to signal an unsupported case). If an equality sign is present, the left and right sides are normalized and moved to one side (pL - pR = 0): if there are no variables, the code evaluates both sides and checks whether the equality holds; if there is exactly one variable, the solver searches for real roots on [-1000, 1000] using Newton’s method; and if there are multiple variables, it returns the simplified polynomial equation set to zero. (see [CNN/src/expression_tree.cpp](./CNN/src/expression_tree.cpp) )
 
 ## 5. NN
 
@@ -132,7 +132,7 @@ You may modify this list to test different images.
 
 
 ## 6. CNN
-(The entire discussion in this paragraph is about the CNN/project folder)
+(The entire discussion in this paragraph is about the CNN folder)
 
 The files related to the CNN solver are located in the CNN folder. The header and source files are located in [CNN/include](./CNN/include) and [CNN/src](./CNN/src), the executable files are in CNN
 
@@ -143,7 +143,7 @@ A scheme similar to LeNet-5 was implemented. ReLU is selected as the activation 
 ### 6.2 Implementation
 
 The skeleton of the base layer has been created - BaseLayer.h. All the following layers are inheritors of this class. 
-The source files have the structure *layer name*.cpp, for example ConvolutionLayer.cpp (see CNN/src). 
+The source files have the structure *layer name*.cpp, for example [ConvolutionLayer.cpp](./CNN/src/ConvolutionLayer.cpp) (see [CNN/src](./CNN/src)). 
 Each layer has vectors for storing gradients, the last input (in layers where it is necessary to use last input for backward pass)/output; variables for storing input and output vector sizes (the code is implemented on one-dimensional vectors, but all calculations assume that we have 3d vectors, so 3 variables are stored).
 The following methods are implemented for each layer:
 - forward / backward pass
@@ -168,18 +168,18 @@ The model is controlled by the CNN class (stored in [CNN.cpp](./CNN/src/CNN.cpp)
 - ~CNN_model() — frees memory by deleting all layers stored in layers.
 
 Implemented additional functions: 
-- read_jpg - processing incoming images in jpg/jped format
-- read_mnist (not used) - processing mnist dataset
-- symbols.cpp - detection and allocation of characters into separate symbols_*number* files.jpg to the symbols folder
+- [read_jpg](./CNN/src/read_jpg.cpp) - processing incoming images in jpg/jped format
+- [read_mnist](./CNN/src/read_mnist.cpp) (not used) - processing mnist dataset
+- [symbols](./CNN/src/symbols.cpp) - detection and allocation of characters into separate symbols_*number* files.jpg to the symbols folder
 
 Executable files:
-- train - model training. Inside the assembly of our architecture (Convolution (6,5,1,2,44,44,1) -> ReLU -> Pool(2,2) -> Convolution(16,5,1,2) -> ReLU -> Pool(2,2) -> FC(120) -> ReLU -> FC(84) -> ReLU -> FC(18) -> Softmax ) and saving the weights to the weights folder/
+- [train](./CNN/src/train.cpp) - model training. Inside the assembly of our architecture (Convolution (6,5,1,2,44,44,1) -> ReLU -> Pool(2,2) -> Convolution(16,5,1,2) -> ReLU -> Pool(2,2) -> FC(120) -> ReLU -> FC(84) -> ReLU -> FC(18) -> Softmax ) and saving the weights to the weights folder/
 Usage: ./cnn_train <train_data_dir> <test_data_dir> <epochs> <batch_size> <learning_rate> <l2_reg> <0/1 for the record training_log.txt>
-- expression_tree.cpp - a complete solution cycle using weights from weights 
+- [expression_tree](./CNN/src/expression_tree.cpp) - a complete solution cycle using weights from weights 
 Usage: ./cnn_solver <image_path>
-- extractor.cpp - Prediction of the input equation and output of the predicted equation as a string
+- [extractor](./CNN/src/extractor.cpp) - Prediction of the input equation and output of the predicted equation as a string
 Usage: ./cnn_extractor
-- metrics.cpp - Calculation of confusion matrix and F1 per class based on validation/ saved in csv files
+- [metrics](./CNN/src/metrics.cpp) - Calculation of confusion matrix and F1 per class based on validation/ saved in csv files
 Usage: ./cnn_metrics
 
 ## 7. Limatations 
