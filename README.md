@@ -193,7 +193,7 @@ The report, along with a literature review and a more detailed description of th
 
 ## 9. Roles in the team
 
-- Ayauly Chayakova and Maram Marsaoui - Implementation of the NN 
+- Ayauly Chayakova and [Maram Marsaoui](https://github.com/marammarsaoui) - Implementation of the NN 
 - Abeer Obeid - Study of various approaches to solving the problem, writing a report, preparing a dataset
 - Le Quyi - Implementation of the Expression Tree module
 - Matvei Kudashev - Implementation of the CNN
